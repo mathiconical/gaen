@@ -7,3 +7,15 @@
 # ignore sublime proj files and workspace
 *.sublime-project
 *.sublime-workspace
+
+# ignore compiler objects
+obj/*
+
+# ignore bin files
+bin/*
+
+# ignore lib files
+lib/*
+
+#ignore include files
+include/*
