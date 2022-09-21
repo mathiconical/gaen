@@ -1,0 +1,9 @@
+# ignore dll's
+./*.dll
+
+# ignore sdl config
+./*.config
+
+# ignore sublime proj files and workspace
+./*.sublime-project
+./*.sublime-workspace
