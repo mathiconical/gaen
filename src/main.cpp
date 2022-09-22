@@ -1,15 +1,18 @@
 #include "Constants.hpp"
+#include "Game.hpp"
 
 int main(int argc, char* args[]){
-	//! instance game object
+	Game game;
 
-	//! initialize game
+	game.Initialize("Window", GAEN::SCREEN::WIDTH, GAEN::SCREEN::HEIGHT);
 
-	//! main loop
-	//! 	process input
-	//! 	update
-	//! 	render
-	
-	//! destroy/clean memory
+	while(game.IsRunning()){
+		game.ProcessInput();
+		game.Update();
+		game.Render();
+	}
+
+	game.Destroy();
+
 	return 0;
 }
