@@ -17,5 +17,8 @@ bin/*
 # ignore lib files
 lib/*
 
-#ignore include files
+# ignore include files
 include/*
+
+# ignore makefile
+Makefile
