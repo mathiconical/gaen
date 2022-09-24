@@ -3,6 +3,8 @@
 #include <map>
 #include <string>
 
+#include <SDL2/SDL.h>
+
 namespace GAEN {
 	namespace SCREEN {
 		//! pixels are 32/32
@@ -35,5 +37,14 @@ namespace GAEN {
 			{"shootKey", "space"},
 			{"borderKey","f"},
 		};
+	};
+
+	namespace FONT {
+		namespace COLOR {
+	    const SDL_Color WHITE = {255, 255, 255, 255};
+	    const SDL_Color RED   = {255, 0, 0, 255};
+	    const SDL_Color GREEN = {0, 255, 0, 255};
+	    const SDL_Color BLUE  = {0, 0, 255, 255};
+	  };
 	};
 };

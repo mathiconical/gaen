@@ -8,6 +8,7 @@
 #include "./Components/SpriteComponent.hpp"
 #include "./Components/KeyboardControlComponent.hpp"
 #include "./Components/ColliderComponent.hpp"
+#include "./Components/TextLabelComponent.hpp"
 
 EntityManager manager;
 AssetManager* Game::assetManager = new AssetManager(&manager);
@@ -33,6 +34,7 @@ void Game::LoadLevel(int levelNumber){
 	assetManager->AddTexture("jungle-tiletexture", std::string("./assets/tilemaps/jungle.png").c_str());
 	assetManager->AddTexture("radar-image", std::string("./assets/images/radar.png").c_str());
 	assetManager->AddTexture("border-image", std::string("./assets/images/collision-texture.png").c_str());
+	assetManager->AddFont("charriot-font", std::string("./assets/fonts/charriot.ttf").c_str(), 14);
 
 	map = new Map("jungle-tiletexture", 1, 32);
 	map->LoadMap("./assets/tilemaps/jungle.map", 25, 20);
@@ -51,6 +53,9 @@ void Game::LoadLevel(int levelNumber){
   Entity& radarEntity(manager.AddEntity("radar", GAEN::LAYER::LayerType::UI_LAYER));
   radarEntity.AddComponent<TransformComponent>(GAEN::SCREEN::WIDTH - 80, 15, 0, 0, 64, 64, 1);
   radarEntity.AddComponent<SpriteComponent>("radar-image", 8, 150, false, true);
+
+  Entity& labelLevelName(manager.AddEntity("LabelLevelName", GAEN::LAYER::LayerType::UI_LAYER));
+  labelLevelName.AddComponent<TextLabelComponent>(10, 10, "First Level...", "charriot-font", GAEN::FONT::COLOR::WHITE);
 }
 
 bool Game::IsRunning() const {
@@ -60,6 +65,11 @@ bool Game::IsRunning() const {
 void Game::Initialize(const std::string& title, int width, int height) {
 	if(SDL_Init(SDL_INIT_EVERYTHING) != 0){
 		std::cerr << "Error on trying to initializing SDL." << '\n';
+		return;
+	}
+
+	if(TTF_Init() != 0){
+		std::cerr << "Error on trying to initializing SDL TTF." << '\n';
 		return;
 	}
 

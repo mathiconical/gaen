@@ -8,10 +8,10 @@ SDL_Texture* TextureManager::LoadTexture(const char* fileName){
 }
 
 void TextureManager::Draw(
-	SDL_Texture* texture,
-	SDL_Rect sourceRectangle,
-	SDL_Rect destinationRectangle,
-	SDL_RendererFlip flip
+		SDL_Texture* texture, /* texture */
+		SDL_Rect sourceRectangle, /* src rect */
+		SDL_Rect destinationRectangle, /* dest rect */
+		SDL_RendererFlip flip /* flip */
 	){
 	SDL_RenderCopyEx(
 		Game::renderer, /* renderer */
