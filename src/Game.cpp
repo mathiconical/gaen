@@ -9,6 +9,7 @@
 #include "./Components/KeyboardControlComponent.hpp"
 #include "./Components/ColliderComponent.hpp"
 #include "./Components/TextLabelComponent.hpp"
+#include "./Components/ProjectileEmitterComponent.hpp"
 
 EntityManager manager;
 AssetManager* Game::assetManager = new AssetManager(&manager);
@@ -32,6 +33,8 @@ void Game::LoadLevel(int levelNumber){
 	assetManager->AddTexture("tank-image", std::string{"./assets/images/tank-big-right.png"}.c_str());
 	assetManager->AddTexture("chopper-image", std::string{"./assets/images/chopper-spritesheet.png"}.c_str());
 	assetManager->AddTexture("jungle-tiletexture", std::string("./assets/tilemaps/jungle.png").c_str());
+	assetManager->AddTexture("heliport-image", std::string("./assets/images/heliport.png").c_str());
+	assetManager->AddTexture("projectile-image", std::string("./assets/images/bullet-enemy.png").c_str());
 	assetManager->AddTexture("radar-image", std::string("./assets/images/radar.png").c_str());
 	assetManager->AddTexture("border-image", std::string("./assets/images/collision-texture.png").c_str());
 	assetManager->AddFont("charriot-font", std::string("./assets/fonts/charriot.ttf").c_str(), 14);
@@ -43,16 +46,27 @@ void Game::LoadLevel(int levelNumber){
 	player.AddComponent<TransformComponent>(240, 106, 0, 0, 32, 32, 1);
 	player.AddComponent<SpriteComponent>("chopper-image", 2, 90, true, false);
 	player.AddComponent<KeyboardControlComponent>(GAEN::KEYMAP::DEFAULT_KEYS);
-	player.AddComponent<ColliderComponent>("player", 240, 106, 32, 32);
+	player.AddComponent<ColliderComponent>("PLAYER", 240, 106, 32, 32);
 
 	Entity& tankEntity(manager.AddEntity("tank", GAEN::LAYER::LayerType::ENEMY_LAYER));
-	tankEntity.AddComponent<TransformComponent>(150, 495, 20, 20, 32, 32, 1);
+	tankEntity.AddComponent<TransformComponent>(150, 495, 5, 7, 32, 32, 1);
 	tankEntity.AddComponent<SpriteComponent>("tank-image");
-	tankEntity.AddComponent<ColliderComponent>("enemy", 150, 495, 32, 32);
+	tankEntity.AddComponent<ColliderComponent>("ENEMY", 150, 495, 32, 32);
+
+	Entity& projectileEntity(manager.AddEntity("projectile", GAEN::LAYER::LayerType::PROJECTILE_LAYER));
+	projectileEntity.AddComponent<TransformComponent>(166, 511, 0, 0, 4, 4, 1);
+	projectileEntity.AddComponent<SpriteComponent>("projectile-image");
+	projectileEntity.AddComponent<ColliderComponent>("PROJECTILE", 166, 511, 4, 4);
+	projectileEntity.AddComponent<ProjectileEmitterComponent>(50, 270, 200, true);
+
+	Entity& heliportEntity(manager.AddEntity("heliport", GAEN::LAYER::LayerType::OBSTACLE_LAYER));
+	heliportEntity.AddComponent<TransformComponent>(470, 420, 0, 0, 32, 32, 1);
+	heliportEntity.AddComponent<SpriteComponent>("heliport-image");
+	heliportEntity.AddComponent<ColliderComponent>("LEVEL_COMPLETE", 470, 420, 32, 32);
 
   Entity& radarEntity(manager.AddEntity("radar", GAEN::LAYER::LayerType::UI_LAYER));
   radarEntity.AddComponent<TransformComponent>(GAEN::SCREEN::WIDTH - 80, 15, 0, 0, 64, 64, 1);
-  radarEntity.AddComponent<SpriteComponent>("radar-image", 8, 150, false, true);
+  radarEntity.AddComponent<SpriteComponent>("radar-image", 8, 120, false, true);
 
   Entity& labelLevelName(manager.AddEntity("LabelLevelName", GAEN::LAYER::LayerType::UI_LAYER));
   labelLevelName.AddComponent<TextLabelComponent>(10, 10, "First Level...", "charriot-font", GAEN::FONT::COLOR::WHITE);
@@ -153,11 +167,20 @@ void Game::Update(){
 }
 
 void Game::CheckCollisions() {
-	std::string collisionTagType = manager.CheckEntityCollisions(player);
-	if(collisionTagType.compare("enemy") == 0){
-		//! TODO: do something when collision is identified as an enemy
+	GAEN::COLLISION::CollisionType collisionType = manager.CheckCollisions();
+	if(collisionType == GAEN::COLLISION::CollisionType::PLAYER_ENEMY_COLLISION){
+		//! TODO: game over?
 		isRunning = false;
 	}
+	if(collisionType == GAEN::COLLISION::CollisionType::PLAYER_PROJECTILE_COLLISION){
+		//! TODO: game over? decrease durability of helicopter?
+		isRunning = false;
+	}
+	if(collisionType == GAEN::COLLISION::CollisionType::PLAYER_LEVEL_COMPLETE_COLLISION){
+		//! TODO: process next level? end game?
+		isRunning = false;
+	}
+	std::cout << collisionType << '\n';
 }
 
 void Game::Render(){
