@@ -16,6 +16,15 @@ void EntityManager::Update(float deltaTime){
 	for(auto& entity : entities){
 		entity->Update(deltaTime);
 	}
+	DestroyInactiveEntities();
+}
+
+void EntityManager::DestroyInactiveEntities(){
+	for(std::size_t i = 0; i < entities.size(); ++i){
+		if(!entities[i]->IsActive()){
+			entities.erase(entities.begin() + i);
+		}
+	}
 }
 
 void EntityManager::Render() {
@@ -59,17 +68,47 @@ void EntityManager::ListAllEntities() const {
 	}
 }
 
-std::string EntityManager::CheckEntityCollisions(Entity& myEntity) const {
-	ColliderComponent* myCollider = myEntity.GetComponent<ColliderComponent>();
-	for(auto& entity : entities){
-		if(entity->name.compare(myEntity.name) != 0 && entity->name.compare("Tile") != 0){
-			if(entity->HasComponent<ColliderComponent>()){
-				ColliderComponent* otherCollider = entity->GetComponent<ColliderComponent>();
-				if(Collision::CheckRectangleCollision(myCollider->collider, otherCollider->collider)){
-					return otherCollider->colliderTag;
-				}
-			}
-		}
-	}
-	return std::string();
+// std::string EntityManager::CheckEntityCollisions(Entity& myEntity) const {
+// 	ColliderComponent* myCollider = myEntity.GetComponent<ColliderComponent>();
+// 	for(auto& entity : entities){
+// 		if(entity->name.compare(myEntity.name) != 0 && entity->name.compare("Tile") != 0){
+// 			if(entity->HasComponent<ColliderComponent>()){
+// 				ColliderComponent* otherCollider = entity->GetComponent<ColliderComponent>();
+// 				if(Collision::CheckRectangleCollision(myCollider->collider, otherCollider->collider)){
+// 					return otherCollider->colliderTag;
+// 				}
+// 			}
+// 		}
+// 	}
+// 	return std::string();
+// }
+
+GAEN::COLLISION::CollisionType EntityManager::CheckCollisions() const {
+    for (std::size_t i = 0; i < entities.size() - 1; ++i) {
+        auto& thisEntity = entities[i];
+        if (thisEntity->HasComponent<ColliderComponent>()) {
+            ColliderComponent* thisCollider = thisEntity->GetComponent<ColliderComponent>();
+            for (std::size_t j = i + 1; j < entities.size(); ++j) {
+                auto& thatEntity = entities[j];
+                if (thisEntity->name.compare(thatEntity->name) != 0 && thatEntity->HasComponent<ColliderComponent>()) {
+                    ColliderComponent* thatCollider = thatEntity->GetComponent<ColliderComponent>();
+                    if (Collision::CheckRectangleCollision(thisCollider->collider, thatCollider->collider)) {
+                        if (thisCollider->colliderTag.compare("PLAYER") == 0 && thatCollider->colliderTag.compare("ENEMY") == 0) {
+                            return GAEN::COLLISION::CollisionType::PLAYER_ENEMY_COLLISION;
+                        }
+                        if (thisCollider->colliderTag.compare("PLAYER") == 0 && thatCollider->colliderTag.compare("PROJECTILE") == 0) {
+                            return GAEN::COLLISION::CollisionType::PLAYER_PROJECTILE_COLLISION;
+                        }
+                        if (thisCollider->colliderTag.compare("ENEMY") == 0 && thatCollider->colliderTag.compare("FRIENDLY_PROJECTILE") == 0) {
+                            return GAEN::COLLISION::CollisionType::ENEMY_PROJECTILE_COLLISION;
+                        }
+                        if (thisCollider->colliderTag.compare("PLAYER") == 0 && thatCollider->colliderTag.compare("LEVEL_COMPLETE") == 0) {
+                            return GAEN::COLLISION::CollisionType::PLAYER_LEVEL_COMPLETE_COLLISION;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return GAEN::COLLISION::CollisionType::NO_COLLISION;
 }

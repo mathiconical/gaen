@@ -12,17 +12,31 @@ namespace GAEN {
 		constexpr int HEIGHT = 608;
 	};
 
+	namespace COLLISION {
+		enum CollisionType {
+			NO_COLLISION,
+			PLAYER_ENEMY_COLLISION,
+			PLAYER_PROJECTILE_COLLISION,
+			ENEMY_PROJECTILE_COLLISION,
+			PLAYER_VEGETATION_COLLIDER,
+			PLAYER_LEVEL_COMPLETE_COLLISION
+		};
+
+		constexpr unsigned int NUM_COLLISIONS = 6;
+	};
+
 	namespace LAYER {
 		enum LayerType {
       TILEMAP_LAYER    = 0,
       VEGETATION_LAYER = 1,
       ENEMY_LAYER      = 2,
-      PLAYER_LAYER     = 3,
-      PROJECTILE_LAYER = 4,
-      UI_LAYER         = 5,
+      OBSTACLE_LAYER   = 3,
+      PLAYER_LAYER     = 4,
+      PROJECTILE_LAYER = 6,
+      UI_LAYER         = 7,
 		};
 
-		constexpr unsigned int NUM_LAYERS = 6;
+		constexpr unsigned int NUM_LAYERS = 7;
 	};
 
 	constexpr std::size_t FPS = 60;

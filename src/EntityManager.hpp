@@ -14,11 +14,12 @@ class EntityManager{
 		void ClearData();
 		void Update(float deltaTime);
 		void Render();
+		void DestroyInactiveEntities();
 		void ListAllEntities() const;
 		bool HasNoEntities() const;
 		Entity& AddEntity(const std::string& entityName, GAEN::LAYER::LayerType layer);
 		std::vector<Entity*> GetEntitiesByLayer(GAEN::LAYER::LayerType layer) const;
 		std::vector<Entity*> GetEntities() const;
 		std::size_t GetEntityCount();
-		std::string CheckEntityCollisions(Entity& myEntity) const;
+		GAEN::COLLISION::CollisionType CheckCollisions() const;
 };
