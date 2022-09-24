@@ -1,0 +1,1 @@
+# https://en.wikipedia.org/wiki/Pixel-art_scaling_algorithms#RotSprite
