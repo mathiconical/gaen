@@ -23,7 +23,6 @@ class SpriteComponent : public Component {
 		std::map<std::string, Animation> animations;
 		std::string currentAnimationName;
 		unsigned int animationIndex = 0;
-		std::map<std::string, SDL_Color> stateColors;
 	public:
 		SDL_RendererFlip spriteFlip = SDL_FLIP_NONE;
 
