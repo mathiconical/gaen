@@ -4,6 +4,7 @@
 #include <map>
 
 #include "../Game.hpp"
+#include "../Map.hpp"
 #include "../EntityManager.hpp"
 #include "../Constants.hpp"
 #include "TransformComponent.hpp"
@@ -57,57 +58,78 @@ class KeyboardControlComponent : public Component {
 		}
 
 		void Update(float deltaTime) override {
+			//! Gather all events on the stack, and update keyboard state
+			// SDL_PumpEvents();
+
+			// const Uint8* state = SDL_GetKeyboardState(NULL);
+
+			// if(state[SDL_SCANCODE_Q]){
+			// 	std::cout << "Q PRESSED\n";
+			// }
+
 			if(Game::event.type == SDL_KEYDOWN){
 				std::string keyCode = std::to_string(Game::event.key.keysym.sym);
 
-				if(keyMap["upKey"] == keyCode){
-					if(transform->position.y <= 0) return;
+				if(keyMap["upKey"].compare(keyCode) == 0){
+					if(transform->position.y + transform->height <= 0){
+						transform->position.y = 0;
+						return;
+					}
 					transform->velocity.y = -200;
 					transform->velocity.x = 0;
 					sprite->Play("UpAnimation");
 				}
 
-				if(keyMap["downKey"] == keyCode){
-					if(transform->velocity.y + transform->position.y >= GAEN::SCREEN::HEIGHT) return;
+				if(keyMap["downKey"].compare(keyCode) == 0){
+					if(transform->position.y + transform->height >= GAEN::SCREEN::HEIGHT * Map::e_scale){
+						transform->position.y = GAEN::SCREEN::HEIGHT * Map::e_scale - transform->height;
+						return;
+					}
 					transform->velocity.y = 200;
 					transform->velocity.x = 0;
 					sprite->Play("DownAnimation");
 				}
 
-				if(keyMap["leftKey"] == keyCode){
-					if(transform->velocity.x + transform->position.x <= 0) return;
+				if(keyMap["leftKey"].compare(keyCode) == 0){
+					if(transform->position.x <= 0){
+						transform->position.x = 2;
+						return;
+					}
 					transform->velocity.y = 0;
 					transform->velocity.x = -200;
 					sprite->Play("LeftAnimation");
 				}
 
-				if(keyMap["rightKey"] == keyCode){
-					if(transform->velocity.x + transform->position.x >= GAEN::SCREEN::WIDTH) return;
+				if(keyMap["rightKey"].compare(keyCode) == 0){
+					if(transform->position.x + transform->width >= GAEN::SCREEN::WIDTH * Map::e_scale){
+						transform->position.x = GAEN::SCREEN::WIDTH * Map::e_scale - transform->height;
+						return;
+					}
 					transform->velocity.y = 0;
 					transform->velocity.x = 200;
 					sprite->Play("RightAnimation");
 				}
 
-				if(keyMap["shoot"] == keyCode){
+				if(keyMap["shoot"].compare(keyCode) == 0){
 					//! TODO: shoot projectiles when pressed shoot key
 				}
 			}
 			if(Game::event.type == SDL_KEYUP){
 				std::string keyCode = std::to_string(Game::event.key.keysym.sym);
 
-				if(keyMap["upKey"] == keyCode){
+				if(keyMap["upKey"].compare(keyCode) == 0){
 					transform->velocity.y = 0;
 				}
 
-				if(keyMap["downKey"] == keyCode){
+				if(keyMap["downKey"].compare(keyCode) == 0){
 					transform->velocity.y = 0;
 				}
 
-				if(keyMap["leftKey"] == keyCode){
+				if(keyMap["leftKey"].compare(keyCode) == 0){
 					transform->velocity.x = 0;
 				}
 
-				if(keyMap["rightKey"] == keyCode){
+				if(keyMap["rightKey"].compare(keyCode) == 0){
 					transform->velocity.x = 0;
 				}
 			}

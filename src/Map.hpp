@@ -8,6 +8,7 @@ class Map {
 		int scale;
 		int tileSize;
 	public:
+		static int e_scale;
 		Map(std::string textureId, int scale, int tileSize);
 		~Map();
 		void LoadMap(std::string filePath, int mapSizeX, int mapSizeY);

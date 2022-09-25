@@ -22,5 +22,4 @@ void TextureManager::Draw(
 		NULL, /* center */
 		flip /* flip */
 	);
-	;
 }

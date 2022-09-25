@@ -19,6 +19,7 @@ class EntityManager{
 		bool HasNoEntities() const;
 		Entity& AddEntity(const std::string& entityName, GAEN::LAYER::LayerType layer);
 		std::vector<Entity*> GetEntitiesByLayer(GAEN::LAYER::LayerType layer) const;
+		Entity* GetEntityByName(std::string name) const;
 		std::vector<Entity*> GetEntities() const;
 		std::size_t GetEntityCount();
 		GAEN::COLLISION::CollisionType CheckCollisions() const;

@@ -8,8 +8,11 @@
 
 extern EntityManager manager;
 
+int Map::e_scale = 0;
+
 Map::Map(std::string textureId, int scale, int tileSize)
 	: textureId(textureId), scale(scale), tileSize(tileSize) {
+		e_scale = scale;
 }
 
 Map::~Map(){

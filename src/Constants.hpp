@@ -6,20 +6,24 @@
 #include <SDL2/SDL.h>
 
 namespace GAEN {
+
+	constexpr std::size_t FPS = 60;
+	constexpr int FRAME_TARGET_TIME = 1000.0f / FPS;
+
 	namespace SCREEN {
 		//! pixels are 32/32
-		constexpr int WIDTH = 768;
-		constexpr int HEIGHT = 608;
+		constexpr int WIDTH = 800;
+		constexpr int HEIGHT = 600;
 	};
 
 	namespace COLLISION {
 		enum CollisionType {
-			NO_COLLISION,
-			PLAYER_ENEMY_COLLISION,
-			PLAYER_PROJECTILE_COLLISION,
-			ENEMY_PROJECTILE_COLLISION,
-			PLAYER_VEGETATION_COLLIDER,
-			PLAYER_LEVEL_COMPLETE_COLLISION
+      NO_COLLISION                    = 0,
+      PLAYER_ENEMY_COLLISION          = 1,
+      PLAYER_PROJECTILE_COLLISION     = 2,
+      ENEMY_PROJECTILE_COLLISION      = 3,
+      PLAYER_VEGETATION_COLLIDER      = 4,
+      PLAYER_LEVEL_COMPLETE_COLLISION = 5,
 		};
 
 		constexpr unsigned int NUM_COLLISIONS = 6;
@@ -38,9 +42,6 @@ namespace GAEN {
 
 		constexpr unsigned int NUM_LAYERS = 7;
 	};
-
-	constexpr std::size_t FPS = 60;
-	constexpr int FRAME_TARGET_TIME = 1000.0f / FPS;
 
 	namespace KEYMAP {
 		static inline std::map<std::string, std::string> DEFAULT_KEYS = {

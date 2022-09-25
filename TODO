@@ -1,0 +1,19 @@
+//! TODO:
+	ECS:
+		Life time projectile or any entity to change a little bit the color using bit mask or SDL_SetColorMod
+
+		Life / Durability of entities
+
+		Ammo / Special Ammo in scene
+
+		Points per entity that can be destroyed
+
+	SCRIPT:
+		Create a console to call functions to refresh / reload without need to close and open program
+
+		Create a debugger mode that can 
+
+	FIX:
+		Fix the escape of window when moving with any movement key held.
+
+		Write some asserts

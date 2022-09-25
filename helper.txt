@@ -1,1 +1,49 @@
+article ECS
+# https://austinmorlan.com/posts/entity_component_system/
+
 # https://en.wikipedia.org/wiki/Pixel-art_scaling_algorithms#RotSprite
+
+# music => the temple of the king - rainbow ( random music playlist )
+
+
+https://stackoverflow.com/questions/26025709/recolouring-sdl2-textures
+
+https://stackoverflow.com/questions/40886350/how-to-connect-multiple-textures-in-the-one-in-sdl2
+
+
+GAME.event || A union that contains structures for the different event types. < https://wiki.libsdl.org/SDL_Event > ||
+	- key : keyboard event data
+	- window: window event data
+	- mouse : mouse event data
+	...
+
+GAME.event.key
+  - type:      SDL_KEYDOWN or SDL_KEYUP
+  - timestamp: timestamp of event
+  - windowID:  window of keyboard focus, if any
+  - state:     SDL_PRESSED or SDL_RELEASE
+  - repeat:    non-zero is a key repeat
+  - keysym:    SDL_Keysym, structure contains more information
+
+Game.event.keysym
+  - scancode: SDL physical key code, SDL_Scancode < https://wiki.libsdl.org/SDL_Scancode >
+  - sym:      SDL virtual key code, SDL_Keycode < https://wiki.libsdl.org/SDL_Keycode >
+  - mod:      current key modifiers, SDL_Keymod < https://wiki.libsdl.org/SDL_Keymod >
+
+
+
+  //! experimental
+  // timeToWait % 2 == 0
+  //  ? mainPlayer->GetComponent<SpriteComponent>()->ChangeColor({255, 255, 255, 255})
+  //  : mainPlayer->GetComponent<SpriteComponent>()->ChangeColor({255, 0, 0, 0});
+
+
+
+  void ChangeColor(SDL_Color color) {
+      SDL_SetTextureColorMod(
+        texture, /* SDL_Texture */
+        color.r,/* Uint8 r */
+        color.g,/* Uint8 g */
+        color.b /* Uint8 b */
+      );
+    }
